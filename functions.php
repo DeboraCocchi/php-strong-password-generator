@@ -3,15 +3,11 @@
 function createPsw($charsnum, $huge_array){
   $repetition=$_GET['repetition'];
   if($repetition=='false'){
-    $repetition=false;
-    if($charsnum>10 && count($huge_array)==10){
-      $charsnum=10;
-    }
     $my_temp_array=[];
     while(count($my_temp_array) <= $charsnum){
-      $my_var=array_rand(array_flip($huge_array),1);
-      if(!in_array($my_var,$my_temp_array)){
-        $my_temp_array[] =$my_var;
+      $my_rdm_var=array_rand(array_flip($huge_array),1);
+      if(!in_array($my_rdm_var,$my_temp_array)){
+        $my_temp_array[] =$my_rdm_var;
      }
   }$password=implode($my_temp_array);
   }else{
@@ -19,7 +15,6 @@ function createPsw($charsnum, $huge_array){
   }
   return $password;  
 }
-
 
 
 ?>

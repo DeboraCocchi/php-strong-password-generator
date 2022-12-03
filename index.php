@@ -5,7 +5,7 @@ $charsnum = intval($_GET['charsnumber'] ?? '');
 $specials=['!','?','&','%','$','<','>','^','+','-','*','/','(',')','[',']','{','}','@','#','_','=',];
 $letters=['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
 $numbers=[0,1,2,3,4,5,6,7,8,9];
-
+$repetition=$_GET['repetition'] ?? true;
 $getSpecials= $_GET['chars'] ?? array();
 
 if(count($getSpecials)==0 || count($getSpecials)==3){
@@ -14,6 +14,9 @@ if(count($getSpecials)==0 || count($getSpecials)==3){
   $huge_array=$specials;
 }elseif(count($getSpecials)==1 && in_array("numbers", $getSpecials)){
   $huge_array=$numbers;
+  if($charsnum>10 && ($repetition=='false')){
+    $charsnum=10;
+  }
 }elseif(count($getSpecials)==1 && in_array("letters", $getSpecials)){
   $huge_array=$letters;
 }elseif(count($getSpecials)==2 && !in_array("special", $getSpecials)){
@@ -23,8 +26,6 @@ if(count($getSpecials)==0 || count($getSpecials)==3){
 }elseif(count($getSpecials)==2 && !in_array("letters", $getSpecials)){
   $huge_array=array_merge($specials, $numbers);
   ;}
-
-
 
 
 ?>
@@ -49,7 +50,7 @@ if(count($getSpecials)==0 || count($getSpecials)==3){
 
     }
     .dc-cont{
-      width:60%;
+      width:50%;
       margin: 50px auto;
       background-color: white;
       border-radius:5px;
@@ -72,9 +73,6 @@ if(count($getSpecials)==0 || count($getSpecials)==3){
       padding:3px 6px;
     }
 
-    .dc-input.checkboxes{
-      width:40%;
-    }
 
     .radios.dc-input{
       background-color:white;
@@ -98,18 +96,19 @@ if(count($getSpecials)==0 || count($getSpecials)==3){
 <div class="dc-cont">
   
     <h1>Strong Password Generator</h1>
-    <h5>Seleziona il numero e il tipo di caratteri per generare la tua nuova password</h5>
+    <h5 class="mt-2">Seleziona il numero e il tipo di caratteri per generare la tua nuova password</h5>
 
  
     <form action="" method="GET">
-      <input type="number" placeholder="Lunghezza password (numero)" name="charsnumber" min="8" max="32" required class="form-control dc-input">
+      <input type="number" placeholder="Lunghezza password (numero)" name="charsnumber" min="8" max="32" required class="form-control dc-input mt-4">
      
-      <div class="radios dc-input d-flex">
+      <div class="radios dc-input d-flex flex-wrap">
+        <h6 class="me-4 w-100">Ripetizione Caratteri</h6>
         <div class="form-check me-3">
           <div class="div">
             <input class="form-check-input" type="radio" value="true" name="repetition" id="flexCheckDefault" checked>
             <label class="form-check-label" for="flexCheckDefault" checked>
-              Permetti ripetizione caratteri
+              Sì
             </label>
           </div>
         </div>
@@ -117,13 +116,13 @@ if(count($getSpecials)==0 || count($getSpecials)==3){
           <div class="div">
             <input class="form-check-input" type="radio" value="false" name="repetition" id="norep" >
             <label class="form-check-label" for="norep">
-              Non ripetere caratteri
+              No
             </label>
           </div>
           
         </div>
       </div>
-      <div class="input-group-text mt-2 d-flex flex-column justify-content-start align-items-start dc-input checkboxes text-left">
+      <div class="input-group-text mt-2 d-flex flex-column justify-content-start align-items-start dc-input checkboxes text-left w-40">
         <h6>Includi:</h6>
         <div class="">
           <input class="form-check-input me-2" type="checkbox" value="special" aria-label="Checkbox for following text input" name="chars[]" id="chars1">
@@ -138,8 +137,8 @@ if(count($getSpecials)==0 || count($getSpecials)==3){
           <label class="form-check-label me-2" for="chars3"> Lettere</label>
         </div>
       </div>
-      <button type="submit" class="btn btn-primary mt-2">Submit</button>
-      <button type="reset" class="btn btn-info mt-2">Reset</button>
+      <button type="submit" class="btn btn-primary my-2">Submit</button>
+      <button type="reset" class="btn btn-info my-2">Reset</button>
     </form>
 
   <?php if(!empty($charsnum)): ?>
