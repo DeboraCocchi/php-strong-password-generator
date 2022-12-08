@@ -9,11 +9,13 @@ function createPsw($charsnum, $huge_array){
       if(!in_array($my_rdm_var,$my_temp_array)){
         $my_temp_array[] =$my_rdm_var;
      }
-  }$password=implode($my_temp_array);
+  }$password=htmlentities(implode($my_temp_array));
   }else{
-    $password=(str_shuffle(implode(array_rand(array_flip($huge_array),$charsnum))));
+    $password=htmlentities(str_shuffle(implode(array_rand(array_flip($huge_array),$charsnum))));
   }
-  return $password;  
+  // var_dump($password);
+  return $password;
+
 }
 
 

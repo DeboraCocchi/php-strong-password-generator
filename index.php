@@ -1,7 +1,8 @@
 <?php 
 require_once __DIR__ . '/functions.php';
 $charsnum = intval($_GET['charsnumber'] ?? '');
-
+$password='';
+$output='';
 $specials=['!','?','&','%','$','<','>','^','+','-','*','/','(',')','[',']','{','}','@','#','_','=',];
 $letters=['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
 $numbers=[0,1,2,3,4,5,6,7,8,9];
@@ -27,6 +28,15 @@ if(count($getSpecials)==0 || count($getSpecials)==3){
   $huge_array=array_merge($specials, $numbers);
   ;}
 
+if($charsnum<8 || $charsnum>32){
+  $output='Attenzione! La password deve contenere un numero di caratteri compreso fra 8 e 32';
+}else{
+  $password=createPsw($charsnum, $huge_array);
+  $output='';
+  session_start();
+  $_SESSION['password'] = $password;
+  header('Location: success.php');
+}
 
 ?>
 
@@ -40,65 +50,22 @@ if(count($getSpecials)==0 || count($getSpecials)==3){
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css" integrity="sha512-SbiR/eusphKoMVVXysTKG/7VseWii+Y3FdHrt0EpKgpToZeemhqHeZeLWLhJutz/2ut2Vw1uQEj2MbRF+TVBUA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <style>
-    body{
-      background-image:url('https://img.freepik.com/free-vector/modern-abstract-blue-transparent-crystal-pattern-background_1409-1283.jpg?w=1480&t=st=1670091952~exp=1670092552~hmac=08fcd1daa09fcb2fac613d50746cf480867081c819e233884f5922d798420c10');
-      background-size:cover;
-      background-repeat:no-repeat;
-      height:100vh;
-      overflow:hidden;
-
-    }
-    .dc-cont{
-      width:50%;
-      margin: 50px auto;
-      background-color: white;
-      border-radius:5px;
-      padding:30px;
-    }
-
-    .dc-cont>h1{
-      color:#0d6efd;
-      text-align:center;
-    }
-
-    .dc-cont>h5{
-      color:#274a7d;
-      text-align:center;
-    }
-    
-
-    .dc-input{
-      display:inline-block;
-      padding:3px 6px;
-    }
-
-
-    .radios.dc-input{
-      background-color:white;
-      border-radius:5px;
-      border:1px solid lightgrey;
-      margin-top:8px;
-    }
-
-    .output{
-      text-align:center;
-      border-radius:5px;
-      border:1px solid lightgrey;
-      margin-top:15px;
-    }
-
-  </style>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <link rel="stylesheet" href="css/style.css">
   <title>Strong Password Generator</title>
 </head>
 <body>
 
 <div class="dc-cont">
-  
     <h1>Strong Password Generator</h1>
-    <h5 class="mt-2">Seleziona il numero e il tipo di caratteri per generare la tua nuova password</h5>
-
- 
+    <h6 class="mt-2">Seleziona il numero e il tipo di caratteri per generare la tua nuova password</h6>
+    
+    <?php if(!empty($output)): ?>
+    <div class="alert alert-danger p-1 text-center m-0" role="alert">
+    <?php echo $output ?>
+    </div>
+    <?php endif; ?>
+   
     <form action="" method="GET">
       <input type="number" placeholder="Lunghezza password (numero)" name="charsnumber" min="8" max="32" required class="form-control dc-input mt-4">
      
@@ -140,14 +107,6 @@ if(count($getSpecials)==0 || count($getSpecials)==3){
       <button type="submit" class="btn btn-primary my-2">Submit</button>
       <button type="reset" class="btn btn-info my-2">Reset</button>
     </form>
-
-  <?php if(!empty($charsnum)): ?>
-  <div class="output">
-    <h6>La password che hai scelto è: <?php echo '<br><h4 style="color:#0d6efd;"> '.  createPsw($charsnum, $huge_array) .' </h4>'?></h6>
-  </div>
-
-  <?php endif; ?>
-
 </div>
 
 
